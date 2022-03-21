@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <!-- the fileinput plugin styling CSS file -->
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!-- bootstrap 5.x or 4.x is supported. You can also use the bootstrap css 3.3.x versions -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <!-- default icons used in the plugin are from Bootstrap 5.x icon library (which can be enabled by loading CSS below) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+
+
+
+
+
+    <!--    <link href="{{ url_for('static',filename='styles/bootstrap.min.css') }}" rel="stylesheet">-->
+    <!--    <link href="{{ url_for('static',filename='styles/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>-->
+    <!--    <link rel="stylesheet" type="text/css" href="style.css">-->
+    <!--    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">-->
+
+
+
+    <link rel= "stylesheet" type= "text/css" href= "../static/styles/style.css">
+
+</head>
+
+<body class="bg-danger">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-12 col-11 main-section">
+            <h1 class="text-center text-danger">Algoscope hematho example2121</h1><br>
+            <form id="test" action="/testModeleImage" enctype="multipart/form-data" method="post">
+                <div class="form-group">
+                    <div class="file-loading">
+                        <input id="input-25" name="input25[]" type="file" >
+                    </div>
+                </div>
+                <!--                <input type="submit" />-->
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--<script src="{{ url_for('static',filename='javascript/jquery-3.2.1.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static',filename='javascript/fileinput.js') }}" type="text/javascript"></script>-->
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>-->
+
+
+<!-- the jQuery Library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
+<!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
+    wish to resize images before upload. This must be loaded before fileinput.min.js -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/plugins/piexif.min.js" type="text/javascript"></script>
+
+<!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
+    This must be loaded before fileinput.min.js -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/plugins/sortable.min.js" type="text/javascript"></script>
+
+<!-- bootstrap.bundle.min.js below is needed if you wish to zoom and preview file content in a detail modal
+    dialog. bootstrap 5.x or 4.x is supported. You can also use the bootstrap js 3.3.x versions. -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<!-- the main fileinput plugin script JS file -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/fileinput.min.js"></script>
+
+<!-- following theme script is needed to use the Font Awesome 5.x theme (`fas`). Uncomment if needed. -->
+<!-- script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/themes/fas/theme.min.js"></script -->
+
+<!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.5/js/locales/LANG.js"></script>
+<!--<script src="{{ url_for('static',filename='javascript/theme.js') }}" type="text/javascript"></script>-->
+<!--<script src="{{ url_for('static',filename='javascript/popper.min.js') }}" type="text/javascript"></script>-->
+<!--<script src="{{ url_for('static',filename='javascript/bootstrap.min.js') }}" type="text/javascript"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
+
+
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+
+
+    $(document).ready(function() {
+        $("#input-25").fileinput({
+            fileActionSettings: {
+                showZoom: true,
+                zoomTitle:"plein écran",
+                showUpload: false,
+                showRemove: true,
+                showDownload: true,
+                downloadTitle:"telecharger la detection"
+            },
+            forceIframeTransport:false,
+            initialPreviewAsData: false,
+            initialPreviewFileType: 'image',
+            allowedFileTypes: ["image"],
+            browseClass: "btn btn-info",
+            mainClass: "d-grid",
+            showCaption: true,
+            showRemove: false,
+            showZoom :false,
+            showClose: false,
+            showBrowse: true,
+            showUpload:true,
+            showUploadedThumbs: false,
+            showPreview: true,
+            uploadUrl: "/testModeleImage",
+            uploadAsync: false,
+            dropZoneTitle:"glisser votre fichier ici...",
+            previewFileIcon: '<i class="fa fa-file"></i>',
+            browseLabel:"Parcourir",
+            uploadLabel: "detection",
+            uploadTitle: "Lancer la detection de l'image",
+            msgPlaceholder:"",
+            preferIconicPreview: false,
+            previewFileExtSettings: {
+                img: function (ext) {
+                    return ext.match(/(jpg|png|jpeg)$/i)
+                },
+            },
+        });
+
+        var t = document.getElementsByClassName("file-preview")[0];
+        t.className = "file-preview d-flex justify-content-around";
+    });
+
+</script>
+
+
+
+</body>
+</html>
