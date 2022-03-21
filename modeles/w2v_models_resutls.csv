@@ -1,0 +1,5 @@
+estimator,accuracy,f1_macro,f1_micro,jaccard,recall,precision
+SGDClassifier,0.3201,0.522,0.608,0.451,0.56,0.662
+logistic,0.35473,0.522,0.619,0.454,0.51,0.761
+randomForest,0.32442,0.557,0.627,0.462,0.591,0.683
+RidgeClassifier,0.15367,0.183,0.337,0.202,0.211,0.759
