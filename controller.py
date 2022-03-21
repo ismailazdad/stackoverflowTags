@@ -34,10 +34,11 @@ def hello():
 def tagGenerators():
     # question  = request.form.get("question")
     # print(question)
-    question = 'java html css'
+    question = "How can I remove a specific item from an array? I have an array of numbers and I'm using the method to add elements to it.\nIs there a simple way to remove a specific element from an array?\nI'm looking for the equivalent of something like:\n\nI have to use core JavaScript. Frameworks are not allowed"
     print('passage controller')
-    t =  Preprocessing('java html css')
+    t =  Preprocessing('')
     cleaned_question =  t.text_cleaner(question)
+    print('result cleaned {}'.format(cleaned_question))
     return 'test'
 # Cleaning function for new question
 
