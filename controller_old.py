@@ -8,21 +8,14 @@ from datetime import datetime
 app = Flask(__name__)
 
 
-# example render base64 images
-# buffered = BytesIO()
-# img_base64.save(buffered, format="JPEG")
-# print(base64.b64encode(buffered.getvalue()).decode('utf-8'))  # base64 encoded image with results
-# return '<html><head>custom head stuff here</head><body><div>'+ results.pandas().xyxy[0].to_json(orient="records") +'</div><div><img src="data:image/jpeg;base64,'+base64.b64encode(buffered.getvalue()).decode('utf-8')+'" alt="img_data"  id="imgslot"/></div></body></html>'
-
-
 @app.route('/')
 def index():
-    return render_template('base.html')
+    return render_template('index.html')
 
 
 @app.route('/hello')
 def hello():
-    return render_template('index.html', utc_dt=datetime.datetime.utcnow())
+    return render_template('index.html', utc_dt=datetime.utcnow())
 
 
 @app.route('/testModeleImage', methods=['POST'])
