@@ -1,0 +1,37 @@
+.main-section{
+margin:2% 0 2% 0;
+padding: 20px;
+/*margin-top: 100px;*/
+background-color: #fff;
+box-shadow: 0px 0px 20px #c1c1c1;
+}
+
+.file-footer-buttons .kv-file-remove{
+    display: none;
+}
+.file-thumb-progress{
+    display: none !important;
+}
+header {
+    min-height: 80px;
+    width: 100%;
+    background-color: #fff;
+}
+footer {
+    background-color: #fff;
+    min-height: 70px;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    background-position-y: 400px;
+    background-image: url(/static/img/logo/foot.jpg);
+}
+.footercontainer{
+    bottom: 0px;
+    color: aliceblue;
+    margin: 20px -10% 0px 10%;
+}
+body{
+    background-image: url("/static/img/background.png");
+    background-repeat: no-repeat;
+}
