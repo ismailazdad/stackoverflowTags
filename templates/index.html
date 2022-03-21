@@ -13,11 +13,11 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12 col-11 main-section">
             <h1 class="text-center text-primary"> stackoverflow questions taging generator </h1><br>
-            <form id="test" action="/tagGenretors" enctype="multipart/form-data" method="post">
+            <form id="test" action="/tagGenerators" onsubmit="sendForm(this.id);return false" method="post">
                 <div class="form-group">
-                    <textarea name="question" ></textarea>
+                    <textarea id="question" name="question" ></textarea>
                 </div>
-
+                <button id="id1" >button 1</button>
             </form>
 
         </div>
@@ -30,8 +30,19 @@
 <script src="{{ url_for('static',filename='javascript/fileinput.js') }}" type="text/javascript"></script>
 <script>
 
-    $(document).ready(function () {
-
+    //$(document).ready(function () {
+        function sendForm(form_id){
+            console.log('passge function ajax');
+            var form = $('#'+form_id);
+            $.ajax({
+                type: 'POST',
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                success: function(result) {
+                    console.log(result)
+                }
+            });
+        }
 
 
 
@@ -44,7 +55,7 @@
         //     }
         // });
 
-    });
+    //});
 </script>
 
 </body>
