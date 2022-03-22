@@ -10,14 +10,14 @@ from datetime import datetime
 import os
 import numpy
 from service.preprocessing import Preprocessing
+from service.w2v_features import w2vFeatures
+from service.extractResults import ShowResultS
+
 
 
 from gensim.models import Word2Vec
 
-
-
 app = Flask(__name__)
-print(os.getcwd())
 
 
 model_path = "modeles/"
@@ -45,55 +45,26 @@ def hello():
 
 @app.route('/tagGenerators', methods=['POST'])
 def tagGenerators():
+    print('passage controller')
+    result = {}
     question  = request.form.get("question")
     print(question)
-    # # question = "How can I remove a specific item from an array? I have an array of numbers and I'm using the method to add elements to it.\nIs there a simple way to remove a specific element from an array?\nI'm looking for the equivalent of something like:\n\nI have to use core JavaScript. Frameworks are not allowed"
-    print('passage controller')
-    t =  Preprocessing('')
-    cleaned_question =  t.text_cleaner(question)
+    questiontext =  Preprocessing()
+    cleaned_question =  questiontext.text_cleaner(question)
     print('result cleaned {}'.format(cleaned_question))
+    extra_result_service =  ShowResultS()
+    print('getTagTfIdfResult')
+    tag_tfid = extra_result_service.getTagTfIdfResult(cleaned_question, tfidf_vectorizer, model_logistic_tfidf)
+    tag_tfid_prob = extra_result_service.getTagTfIdfResultWithProba(cleaned_question, tfidf_vectorizer, model_logistic_tfidf)
+    result['tfidf'] = tag_tfid
+    result['tfidf_proba'] =  tag_tfid_prob['Pred_Tags_Probab']
+    print('word2vec')
+    tag_w2v = extra_result_service.getTagWord2vecResult(cleaned_question, word2vec_vectorizer, model_logistic_word2vec)
+    tag_w2v_prob = extra_result_service.getTagWord2vecResultWithProba(cleaned_question, word2vec_vectorizer, model_logistic_word2vec)
+    result['w2v'] = tag_w2v
+    result['w2v_proba'] =  tag_w2v_prob['Pred_Tags_Probab']
+    return result
 
-
-    #prediction with TDIDF
-    #make vectorization and prediction
-    X_tfidf = tfidf_vectorizer.transform([cleaned_question])
-    predict = model_logistic_tfidf.predict(X_tfidf)
-    predict_probas = model_logistic_tfidf.predict_proba(X_tfidf)
-    # Inverse multilabel binarizer
-    tags_predict_tfidf = multilabel_binarizer.inverse_transform(predict)
-    tag_tfid = list(itertools.chain(*tags_predict_tfidf))
-    print(tag_tfid)
-
-
-
-    #prediction with word2vec
-    #make vectorization and prediction
-    X_w2v = word2vec_features([cleaned_question], word2vec_vectorizer)
-    predict_w2v = model_logistic_word2vec.predict(X_w2v)
-    tags_predict_w2v = multilabel_binarizer.inverse_transform(predict_w2v)
-    print('result w2v')
-    # print(tags_predict_w2v)
-    tag_w2v = list(itertools.chain(*tags_predict_w2v))
-    print(tag_w2v)
-
-    resultList= list(set(tag_tfid) | set(tag_w2v))
-    print('result joined')
-    print(resultList)
-
-    return 'end'
-
-def get_vect(word, model):
-    try:
-        return model.wv[word]
-    except KeyError:
-        return numpy.zeros((model.vector_size,))
-
-def sum_vectors(phrase, model):
-    return sum(get_vect(w, model) for w in phrase)
-
-def word2vec_features(X, model):
-    feats = numpy.vstack([sum_vectors(p, model) for p in X])
-    return feats
 
 if __name__ == "__main__":
     app.config['env'] = sys.argv[1]

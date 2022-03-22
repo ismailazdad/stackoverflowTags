@@ -13,7 +13,7 @@ from flask import Flask, jsonify, request, render_template, Config
 # Initialize NLP parameters
 class Preprocessing:
 
-    def __init__(self, question):
+    def __init__(self, question=None):
         self.question = question
 
     # Cleaning function for new question
