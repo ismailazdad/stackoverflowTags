@@ -7,8 +7,11 @@ import en_core_web_sm
 import datetime
 from datetime import datetime
 import os
+import numpy
 from service.preprocessing import Preprocessing
 
+
+from gensim.models import Word2Vec
 
 
 
@@ -17,9 +20,17 @@ print(os.getcwd())
 
 
 model_path = "modeles/"
-vectorizer = joblib.load(model_path + "tfidf_vectorizer33.pkl", 'r')
-multilabel_binarizer = joblib.load(model_path + "multilabel_binarizer33.pkl", 'r')
-model = joblib.load(model_path + "logit_nlp_model33.pkl", 'r')
+multilabel_binarizer = joblib.load(model_path + "multilabel_binarizer.pkl", 'r')
+
+#modele et vecteurs TFIDF
+tfidf_vectorizer = joblib.load(model_path + "tfidf_vectors.pkl", 'r')
+model_logistic_tfidf = joblib.load(model_path + "model_logistic_tfidf.pkl", 'r')
+model_sgdc_tfidf = joblib.load(model_path + "model_SGDC_tfidf.pkl", 'r')
+
+#modele et vecteurs word2vec
+word2vec_vectorizer = Word2Vec.load(model_path +"w2v_vertors.bin")
+model_logistic_word2vec = joblib.load(model_path + "model_logistic_w2v.pkl", 'r')
+model_sgdc_word2vec = joblib.load(model_path + "model_SGDC_w2v.pkl", 'r')
 
 
 @app.route('/')
@@ -41,16 +52,39 @@ def tagGenerators():
     cleaned_question =  t.text_cleaner(question)
     print('result cleaned {}'.format(cleaned_question))
 
+
+    #prediction with TDIDF
     #make vectorization and prediction
-    X_tfidf = vectorizer.transform(  [cleaned_question])
-    predict = model.predict(X_tfidf)
-    predict_probas = model.predict_proba(X_tfidf)
+    X_tfidf = tfidf_vectorizer.transform([cleaned_question])
+    predict = model_logistic_tfidf.predict(X_tfidf)
+    predict_probas = model_logistic_tfidf.predict_proba(X_tfidf)
     # Inverse multilabel binarizer
-    tags_predict = multilabel_binarizer.inverse_transform(predict)
-    print('fin')
-    print(tags_predict)
+    tags_predict_tfidf = multilabel_binarizer.inverse_transform(predict)
+    print('result tfidf')
+    print(tags_predict_tfidf)
+
+
+
+
+    X_w2v = word2vec_features([cleaned_question], word2vec_vectorizer)
+    predict_w2v = model_logistic_word2vec.predict(X_w2v)
+    tags_predict_w2v = multilabel_binarizer.inverse_transform(predict_w2v)
+    print('result w2v')
+    print(tags_predict_w2v)
     return 'end'
 
+def get_vect(word, model):
+    try:
+        return model.wv[word]
+    except KeyError:
+        return numpy.zeros((model.vector_size,))
+
+def sum_vectors(phrase, model):
+    return sum(get_vect(w, model) for w in phrase)
+
+def word2vec_features(X, model):
+    feats = numpy.vstack([sum_vectors(p, model) for p in X])
+    return feats
 
 if __name__ == "__main__":
     app.config['env'] = sys.argv[1]
