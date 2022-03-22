@@ -35,3 +35,8 @@ body{
     background-image: url("/static/img/background.png");
     background-repeat: no-repeat;
 }
+
+#question{
+    font-family: serif;
+    font-size: 200%;
+}

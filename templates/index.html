@@ -13,12 +13,17 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12 col-11 main-section">
             <h1 class="text-center text-primary"> stackoverflow questions taging generator </h1><br>
-            <form id="test"  onsubmit="sendForm(this.id);return false" method="post">
+            <form id="formsTagPredictor"  onsubmit="sendForm(this.id);return false" method="post">
                 <div class="form-group">
-                    <textarea id="question" name="question" ></textarea>
+                    <textarea class="form-control" rows="5" id="question" name="question" ></textarea>
                 </div>
-                <button id="id1" >button 1</button>
+                <button id="test" class="btn btn-primary">Predict tags</button>
+
             </form>
+
+            <div id="resultdiv" class="col-lg-8 col-sm-8">
+
+            </div>
 
         </div>
     </div>
@@ -33,13 +38,37 @@
     //$(document).ready(function () {
         function sendForm(form_id){
             console.log('passge function ajax');
+            $('#resultdiv').empty()
             var form = $('#'+form_id);
             $.ajax({
                 type: 'POST',
                 url: '/tagGenerators',
                 data: $(form).serialize(),
                 success: function(result) {
-                    console.log(result)
+                    console.log('reponse');
+                    if(result['tfidf'].length >= 1){
+                        console.log('reponse result tfidf');
+                        $('#resultdiv').append("<label>logistic model with tfidf</label>");
+                        result['tfidf'].forEach((item) => {
+                            console.log(item);
+                            console.log(result['tfidf_proba'][item]);
+                            probres = result['tfidf_proba'][item] * 100;
+                            $('#resultdiv').append("<div> <label> "+ item +" </label> : predictions convidence : "+Math.round(probres)+"% <progress max='100' value='"+probres+"'> </progress></div> ");
+                        })
+                    }
+
+                    if(result['w2v'].length >= 1){
+                        console.log('reponse result w2v');
+                        $('#resultdiv').append("<label>logistic model with w2v</label>");
+                        result['w2v'].forEach((item) => {
+                            console.log(item);
+                            console.log(result['w2v_proba'][item]);
+                            probres = result['w2v_proba'][item] * 100;
+                            $('#resultdiv').append("<div> <label> "+ item +" </label> : predictions convidence : "+Math.round(probres)+"% <progress max='100' value='"+probres+"'> </progress></div> ");
+                        })
+                    }
+
+                    console.log(result);
                 }
             });
         }
