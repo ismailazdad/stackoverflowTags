@@ -2,6 +2,7 @@ import sys
 from flask import Flask, jsonify, request, render_template, Config
 import pandas as pd
 import joblib
+import itertools
 import spacy
 import en_core_web_sm
 import datetime
@@ -60,17 +61,25 @@ def tagGenerators():
     predict_probas = model_logistic_tfidf.predict_proba(X_tfidf)
     # Inverse multilabel binarizer
     tags_predict_tfidf = multilabel_binarizer.inverse_transform(predict)
-    print('result tfidf')
-    print(tags_predict_tfidf)
+    tag_tfid = list(itertools.chain(*tags_predict_tfidf))
+    print(tag_tfid)
 
 
 
-
+    #prediction with word2vec
+    #make vectorization and prediction
     X_w2v = word2vec_features([cleaned_question], word2vec_vectorizer)
     predict_w2v = model_logistic_word2vec.predict(X_w2v)
     tags_predict_w2v = multilabel_binarizer.inverse_transform(predict_w2v)
     print('result w2v')
-    print(tags_predict_w2v)
+    # print(tags_predict_w2v)
+    tag_w2v = list(itertools.chain(*tags_predict_w2v))
+    print(tag_w2v)
+
+    resultList= list(set(tag_tfid) | set(tag_w2v))
+    print('result joined')
+    print(resultList)
+
     return 'end'
 
 def get_vect(word, model):
