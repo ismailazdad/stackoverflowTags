@@ -48,7 +48,6 @@ def tagGenerators():
     print('passage controller')
     result = {}
     question  = request.form.get("question")
-    print(question)
     questiontext =  Preprocessing()
     cleaned_question =  questiontext.text_cleaner(question)
     print('result cleaned {}'.format(cleaned_question))
