@@ -21,35 +21,38 @@ app = Flask(__name__)
 
 
 model_path = "modeles/"
-multilabel_binarizer = joblib.load(model_path + "multilabel_binarizer.pkl", 'r')
+MULTILABEL_BINAZER = "multilabel_binarizer.pkl"
+TDIDF_VECTORS = "tfidf_vectors.pkl"
+MODELE_LOGISTIC_TFIDF = "model_logistic_tfidf.pkl"
+MODEL_SGDC_TFIDF = "model_SGDC_tfidf.pkl"
+W2V_VECTORS = "w2v_vertors.bin"
+MODELE_LOGISTIC_W2V  = "model_logistic_w2v.pkl"
+MODELE_SGDC_W2V = "model_SGDC_w2v.pkl"
 
-#modele et vecteurs TFIDF
-tfidf_vectorizer = joblib.load(model_path + "tfidf_vectors.pkl", 'r')
-model_logistic_tfidf = joblib.load(model_path + "model_logistic_tfidf.pkl", 'r')
-model_sgdc_tfidf = joblib.load(model_path + "model_SGDC_tfidf.pkl", 'r')
+# load multilabels
+multilabel_binarizer = joblib.load(model_path + MULTILABEL_BINAZER, 'r')
+# modele et vecteurs TFIDF
+tfidf_vectorizer = joblib.load(model_path + TDIDF_VECTORS, 'r')
+model_logistic_tfidf = joblib.load(model_path + MODELE_LOGISTIC_TFIDF, 'r')
+model_sgdc_tfidf = joblib.load(model_path + MODEL_SGDC_TFIDF, 'r')
 
 #modele et vecteurs word2vec
-word2vec_vectorizer = Word2Vec.load(model_path +"w2v_vertors.bin")
-model_logistic_word2vec = joblib.load(model_path + "model_logistic_w2v.pkl", 'r')
-model_sgdc_word2vec = joblib.load(model_path + "model_SGDC_w2v.pkl", 'r')
+word2vec_vectorizer = Word2Vec.load(model_path + W2V_VECTORS)
+model_logistic_word2vec = joblib.load(model_path + MODELE_LOGISTIC_W2V, 'r')
+model_sgdc_word2vec = joblib.load(model_path + MODELE_SGDC_W2V, 'r')
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-@app.route('/hello')
-def hello():
-    return render_template('index.html', utc_dt=datetime.utcnow())
-
 @app.route('/tagGenerators', methods=['POST'])
 def tagGenerators():
     print('passage controller')
     result = {}
     question  = request.form.get("question")
-    questiontext =  Preprocessing()
-    cleaned_question =  questiontext.text_cleaner(question)
+    question_service =  Preprocessing()
+    cleaned_question =  question_service.text_cleaner(question)
     print('result cleaned {}'.format(cleaned_question))
     extra_result_service =  ShowResultS()
     print('getTagTfIdfResult')
