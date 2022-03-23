@@ -19,7 +19,7 @@ header {
 }
 footer {
     background-color: #fff;
-    min-height: 70px;
+    min-height: 40px;
     width: 100%;
     bottom: 0;
     position: fixed;
@@ -39,4 +39,11 @@ body{
 #question{
     font-family: serif;
     font-size: 200%;
+}
+ .rescontain{
+    float: left;
+    margin-top: 2%;
+    height: 177px;
+    overflow-y: auto;
+     /*border : solid 2px red;*/
 }

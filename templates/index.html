@@ -23,14 +23,20 @@
             <div id="wait" style="display: none;">
                 <img src="{{ url_for('static',filename='img/loading.gif') }}">
             </div>
-            <div>
+            <div >
                 <div id="resultdiv"></div>
-                <div class="container" style="margin-top: 2%">
+                <div class="container" style="margin-top: 2%; height: 300px;">
                     <div class="row">
-                        <div id="resultdividf" class="col-lg-5">
+                        <div id="logisticresultdividf" class="col-lg-5 rescontain">
 
                         </div>
-                        <div id="resultdivw2v" class="col-lg-5" style="float: right">
+                        <div id="sgdcresultdividf" class="col-lg-5 rescontain" >
+
+                        </div>
+                        <div id="logisticresultdivw2v" class="col-lg-5 rescontain" >
+
+                        </div>
+                        <div id="sgdcresultdivw2v" class="col-lg-5 rescontain" >
 
                         </div>
                     </div>
@@ -48,11 +54,13 @@
 <script src="{{ url_for('static',filename='javascript/fileinput.js') }}" type="text/javascript"></script>
 <script>
 
-    //$(document).ready(function () {
+
     function sendForm(form_id) {
         console.log('passge function ajax');
-        $('#resultdividf').empty();
-        $('#resultdivw2v').empty();
+        $('#logisticresultdividf').empty();
+        $('#sgdcresultdividf').empty();
+        $('#logisticresultdivw2v').empty();
+        $('#sgdcresultdivw2v').empty();
         $('#resultdiv').empty();
 
         var form = $('#' + form_id);
@@ -66,30 +74,55 @@
                     $('#wait').hide();
                     console.log('reponse');
 
-                    if (result['tfidf'].length >= 1) {
+                    if (result['tfidf_logistic'].length >= 1) {
                         console.log('reponse result tfidf');
-                        $('#resultdividf').append("<label>logistic model with tf-idf</label>");
-                        result['tfidf'].forEach((item) => {
+                        $('#logisticresultdividf').append("<label>LOGISTIC model with tf-idf</label>");
+                        result['tfidf_logistic'].forEach((item) => {
                             console.log(item);
-                            console.log(result['tfidf_proba'][item]);
-                            probres = result['tfidf_proba'][item] * 100;
-                            $('#resultdividf').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  convidence : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
+                            console.log(result['tfidf_logistic_proba'][item]);
+                            probres = result['tfidf_logistic_proba'][item] * 100;
+                            $('#logisticresultdividf').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  conf : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
                         })
                     }
 
-                    if (result['w2v'].length >= 1) {
-                        console.log('reponse result w2v');
-                        $('#resultdivw2v').append("<label>logistic model with word2vec</label>");
-                        result['w2v'].forEach((item) => {
+                    if (result['tfidf_sgdc'].length >= 1) {
+                        console.log('reponse result tfidf');
+                        $('#sgdcresultdividf').append("<label>SGDC model with tf-idf</label>");
+                        result['tfidf_sgdc'].forEach((item) => {
                             console.log(item);
-                            console.log(result['w2v_proba'][item]);
-                            probres = result['w2v_proba'][item] * 100;
-                            $('#resultdivw2v').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  convidence : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
+                            console.log(result['tfidf_sgdc_proba'][item]);
+                            probres = result['tfidf_sgdc_proba'][item] * 100;
+                            $('#sgdcresultdividf').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  conf : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
                         })
                     }
-                    if ((result['tfidf'].length == 0) && (result['w2v'].length == 0)) {
+
+                    if (result['w2v_logistic'].length >= 1) {
+                        console.log('reponse result w2v');
+                        $('#logisticresultdivw2v').append("<label>LOGISTIC model with word2vec</label>");
+                        result['w2v_logistic'].forEach((item) => {
+                            console.log(item);
+                            console.log(result['w2v_logistic_proba'][item]);
+                            probres = result['w2v_logistic_proba'][item] * 100;
+                            $('#logisticresultdivw2v').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  conf : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
+                        })
+                    }
+
+                    if (result['w2v_sgdc'].length >= 1) {
+                        console.log('reponse result w2v');
+                        $('#sgdcresultdivw2v').append("<label>SGDC model with word2vec</label>");
+                        result['w2v_sgdc'].forEach((item) => {
+                            console.log(item);
+                            console.log(result['w2v_sgdc_proba'][item]);
+                            probres = result['w2v_sgdc_proba'][item] * 100;
+                            $('#sgdcresultdivw2v').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  conf : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
+                        })
+                    }
+
+                    if ((result['tfidf_logistic'].length == 0 && result['tfidf_sgdc'].length == 0 && result['w2v_logistic'].length == 0 && result['w2v_sgdc'].length == 0 )) {
                         $('#resultdiv').append("No results...");
                     }
+
+
                 }
             });
         }else{
@@ -97,7 +130,7 @@
         }
     }
 
-    //});
+
 </script>
 
 </body>

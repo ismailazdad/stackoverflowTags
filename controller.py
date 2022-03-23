@@ -56,13 +56,30 @@ def tagGenerators():
     print('result cleaned {}'.format(cleaned_question))
     extra_result_service =  ShowResultS()
     print('getTagTfIdfResult')
-    tag_tfid_prob = extra_result_service.getTagTfIdfResultWithProba(cleaned_question, tfidf_vectorizer, model_logistic_tfidf)
-    result['tfidf'] = [*tag_tfid_prob['Pred_Tags_Probab']]
-    result['tfidf_proba'] =  tag_tfid_prob['Pred_Tags_Probab']
+
+    tag_tfid_logistic_prob = extra_result_service.getTagTfIdfResultWithProba(cleaned_question, tfidf_vectorizer, model_logistic_tfidf)
+    result['tfidf_logistic'] = [*tag_tfid_logistic_prob['Pred_Tags_Probab']]
+    result['tfidf_logistic_proba'] =  tag_tfid_logistic_prob['Pred_Tags_Probab']
+
+
+    tag_tfid_sgdc_prob = extra_result_service.getTagTfIdfResultWithProba(cleaned_question, tfidf_vectorizer, model_sgdc_tfidf)
+    result['tfidf_sgdc'] = [*tag_tfid_sgdc_prob['Pred_Tags_Probab']]
+    result['tfidf_sgdc_proba'] =  tag_tfid_sgdc_prob['Pred_Tags_Probab']
+
+
+
+
     print('word2vec')
-    tag_w2v_prob = extra_result_service.getTagWord2vecResultWithProba(cleaned_question, word2vec_vectorizer, model_logistic_word2vec)
-    result['w2v'] = [*tag_w2v_prob['Pred_Tags_Probab']]
-    result['w2v_proba'] =  tag_w2v_prob['Pred_Tags_Probab']
+    tag_w2v_logistic_prob = extra_result_service.getTagWord2vecResultWithProba(cleaned_question, word2vec_vectorizer, model_logistic_word2vec)
+    result['w2v_logistic'] = [*tag_w2v_logistic_prob['Pred_Tags_Probab']]
+    result['w2v_logistic_proba'] =  tag_w2v_logistic_prob['Pred_Tags_Probab']
+
+
+
+    tag_w2v_sgdc_prob = extra_result_service.getTagWord2vecResultWithProba(cleaned_question, word2vec_vectorizer, model_sgdc_word2vec)
+    result['w2v_sgdc'] = [*tag_w2v_sgdc_prob['Pred_Tags_Probab']]
+    result['w2v_sgdc_proba'] =  tag_w2v_sgdc_prob['Pred_Tags_Probab']
+
     return result
 
 
