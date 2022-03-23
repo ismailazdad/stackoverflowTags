@@ -13,17 +13,30 @@
     <div class="row">
         <div class="col-lg-12 col-sm-12 col-11 main-section">
             <h1 class="text-center text-primary"> stackoverflow questions taging generator </h1><br>
-            <form id="formsTagPredictor"  onsubmit="sendForm(this.id);return false" method="post">
+            <form id="formsTagPredictor" onsubmit="sendForm(this.id);return false" method="post">
                 <div class="form-group">
-                    <textarea class="form-control" rows="5" id="question" name="question" ></textarea>
+                    <textarea class="form-control" rows="5" id="question" name="question"></textarea>
                 </div>
                 <button id="test" class="btn btn-primary">Predict tags</button>
 
             </form>
-
-            <div id="resultdiv" class="col-lg-8 col-sm-8">
-
+            <div id="wait" style="display: none;">
+                <img src="{{ url_for('static',filename='img/loading.gif') }}">
             </div>
+            <div>
+                <div id="resultdiv"></div>
+                <div class="container" style="margin-top: 2%">
+                    <div class="row">
+                        <div id="resultdividf" class="col-lg-5">
+
+                        </div>
+                        <div id="resultdivw2v" class="col-lg-5" style="float: right">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>
@@ -36,42 +49,53 @@
 <script>
 
     //$(document).ready(function () {
-        function sendForm(form_id){
-            console.log('passge function ajax');
-            $('#resultdiv').empty()
-            var form = $('#'+form_id);
+    function sendForm(form_id) {
+        console.log('passge function ajax');
+        $('#resultdividf').empty();
+        $('#resultdivw2v').empty();
+        $('#resultdiv').empty();
+
+        var form = $('#' + form_id);
+        if ($('#question').val().trim() != '') {
+            $('#wait').show();
             $.ajax({
                 type: 'POST',
                 url: '/tagGenerators',
                 data: $(form).serialize(),
-                success: function(result) {
+                success: function (result) {
+                    $('#wait').hide();
                     console.log('reponse');
-                    if(result['tfidf'].length >= 1){
+
+                    if (result['tfidf'].length >= 1) {
                         console.log('reponse result tfidf');
-                        $('#resultdiv').append("<label>logistic model with tfidf</label>");
+                        $('#resultdividf').append("<label>logistic model with tf-idf</label>");
                         result['tfidf'].forEach((item) => {
                             console.log(item);
                             console.log(result['tfidf_proba'][item]);
                             probres = result['tfidf_proba'][item] * 100;
-                            $('#resultdiv').append("<div> <label> "+ item +" </label> : predictions convidence : "+Math.round(probres)+"% <progress max='100' value='"+probres+"'> </progress></div> ");
+                            $('#resultdividf').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  convidence : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
                         })
                     }
 
-                    if(result['w2v'].length >= 1){
+                    if (result['w2v'].length >= 1) {
                         console.log('reponse result w2v');
-                        $('#resultdiv').append("<label>logistic model with w2v</label>");
+                        $('#resultdivw2v').append("<label>logistic model with word2vec</label>");
                         result['w2v'].forEach((item) => {
                             console.log(item);
                             console.log(result['w2v_proba'][item]);
                             probres = result['w2v_proba'][item] * 100;
-                            $('#resultdiv').append("<div> <label> "+ item +" </label> : predictions convidence : "+Math.round(probres)+"% <progress max='100' value='"+probres+"'> </progress></div> ");
+                            $('#resultdivw2v').append("<div style='margin-top: 2%'><button type='button' class='btn btn-warning'><label>#" + item + " </label></button>  convidence : " + Math.round(probres) + "% <progress max='100' value='" + probres + "'> </progress></div> ");
                         })
                     }
-
-                    console.log(result);
+                    if ((result['tfidf'].length == 0) && (result['w2v'].length == 0)) {
+                        $('#resultdiv').append("No results...");
+                    }
                 }
             });
+        }else{
+            $('#resultdiv').append("No results...");
         }
+    }
 
     //});
 </script>
