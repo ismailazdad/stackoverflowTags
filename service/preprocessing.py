@@ -6,8 +6,11 @@ from bs4 import BeautifulSoup
 from bs4 import Comment
 from nltk import regexp_tokenize
 from nltk.corpus import stopwords
-import en_core_web_sm
-
+# import en_core_web_sm
+import spacy
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 from flask import Flask, jsonify, request, render_template, Config
 # Initialize NLP parameters
@@ -44,7 +47,8 @@ class Preprocessing:
 
 
     def text_cleaner(self,txt):
-        nlp = en_core_web_sm.load(exclude=['tok2vec', 'ner', 'parser', 'attribute_ruler', 'lemmatizer'])
+        # nlp = en_core_web_sm.load(exclude=['tok2vec', 'ner', 'parser', 'attribute_ruler', 'lemmatizer'])
+        nlp = spacy.load('en_core_web_sm')
         # clean tag block code
         print('text_cleaner')
         print(txt)
