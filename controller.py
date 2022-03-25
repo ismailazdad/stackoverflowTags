@@ -41,6 +41,7 @@ word2vec_vectorizer = Word2Vec.load(model_path + W2V_VECTORS)
 model_logistic_word2vec = joblib.load(model_path + MODELE_LOGISTIC_W2V, 'r')
 model_sgdc_word2vec = joblib.load(model_path + MODELE_SGDC_W2V, 'r')
 
+#API available in http://ismail2233.pythonanywhere.com/
 
 @app.route('/')
 def index():
