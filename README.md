@@ -5,12 +5,15 @@ Stackoverflow question Tags predictors
 Project is created with:
 
 Flask 
+
 Python 3.8 (Numpy, Pandas, Sklearn, NLTK, Spacy ...)
 
 This API entry point extends the Tag generator project for Stackoverflow questions using simple Machine Learning algorithms
 
 Models implemented :
+
 Tf idf : Logistic and SGDC algorithme
+
 wor2vec : Logistic and SGDC algorithme
 
 
