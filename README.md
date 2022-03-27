@@ -8,7 +8,7 @@ Flask
 
 Python 3.8 (Numpy, Pandas, Sklearn, NLTK, Spacy ...)
 
-This API entry point extends the Tag generator project for Stackoverflow questions using simple Machine Learning algorithms
+This API entry point extends the Tag generator project for Stackoverflow
 
 Models implemented :
 
